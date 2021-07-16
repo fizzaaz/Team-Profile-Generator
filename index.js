@@ -1,6 +1,6 @@
 //importing required libraries for filing and prompting user
 const fs = require("fs");
-const inquirer = require("inquirer");
+const inquirer =require("inquirer");
 
 //importing classes
 const manager = require('./lib/Manager')
@@ -35,7 +35,7 @@ const questions = [
 
 const init=()=>
 {
-inquirer.prompt(questions);
+inquirer.prompt("how jsjw");
 }
 
 init();

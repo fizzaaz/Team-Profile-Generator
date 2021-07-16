@@ -12,8 +12,12 @@
   },
   "author": "",
   "license": "ISC",
+  "dependencies": {
+    "inquirer": "^6.5.2"
+  },
   "bugs": {
     "url": "https://github.com/fizzaaz/Team-Profile-Generator/issues"
+    
   },
   "homepage": "https://github.com/fizzaaz/Team-Profile-Generator#readme"
 }
