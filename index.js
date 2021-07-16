@@ -33,7 +33,7 @@ const questions = [
     }
 ]
 
-const init=()=>
+function init()
 {
 inquirer.prompt(questions);
 }
