@@ -113,7 +113,7 @@ const mgrQuestions = [
 
 ]
 
-const askInternQuestion = (employee) => {
+const askIntern = (employee) => {
     inquirer.prompt([
         {
             type: "input",
@@ -146,7 +146,7 @@ const askInternQuestion = (employee) => {
         let emp = new intern(employee.id, employee.name, employee.email, response.school)
         teamMembers.push(emp);
         if (response.newEmployee) {
-            addTeamMember();
+            addnewEmp();
         }
         else {
             console.log("Team completed")
@@ -158,9 +158,10 @@ const askInternQuestion = (employee) => {
 
 
 
-const addManager = () => {
+const askManager = () => {
     inquirer.prompt(mgrQuestions).then(employee => {
-
+        let emp = new manager(employee.id, employee.name, employee.email, employee.officeNumber)
+        teamMembers.push(emp);
         if (employee.newEmployee) {
             addnewEmp();
         }
@@ -171,9 +172,8 @@ const addManager = () => {
     )
 }
 
-const askEngineer=()=>
-{
-    inquirer.prompt({
+const askEngineer = (employee) => {
+    inquirer.prompt([{
         type: "input",
         name: "github",
         message: "Enter Employee's Github User name",
@@ -188,8 +188,25 @@ const askEngineer=()=>
             }
         }
     },
+    {
+        type: 'confirm',
+        name: 'newEmployee',
+        message: "What you like to add more employee?",
+        default: false
+    }
+    ]).then(response => {
+        let emp = new engineer(employee.id, employee.name, employee.email, response.github)
+        teamMembers.push(emp);
+        if (response.newEmployee) {
+            addnewEmp();
+        }
+        else {
+            console.log("Team completed")
+            console.log(teamMembers);
+        }
+    });
 
-    )
+
 }
 const addnewEmp = () => {
     inquirer.prompt(
@@ -274,17 +291,15 @@ const addnewEmp = () => {
                         }
                     },
 
-                ]).then(function()
-                {
-                if (employee.role === "Engineer")
-                {
-                    askEngineer();
-                }
-                else if (employee.role === "Intern") 
-                {
-                    console.log("djfjhdf")
-                }
-            });
+                ]).then(function (emp) {
+                    if (employee.role === "Engineer") {
+
+                        askEngineer(emp);
+                    }
+                    else if (employee.role === "Intern") {
+                        askIntern(emp);
+                    }
+                });
                 /*   .then(employee=>
                        {
                        let emp=new engineer(employee.id,employee.name,employee.email,employee.github) 
@@ -303,7 +318,7 @@ const addnewEmp = () => {
         })
 }
 const init = () => {
-    addManager();
+    askManager();
 }
 
 init();
