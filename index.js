@@ -89,7 +89,7 @@ const questions = [
         choices: ['Engineer', 'Manager', 'Intern']
     }
 ]
-const askManagerQuestion = () => {
+const askManagerQuestion = (employee) => {
     inquirer.prompt([
         {
             type: "input",
@@ -122,6 +122,8 @@ const askManagerQuestion = () => {
         }
     ]).then(response=>
         {
+            let emp=new manager(employee.id,employee.name,employee.email,response.officeNumber) 
+           teamMembers.push(emp);
             if(response.newEmployee)
             {
                 addTeamMember();           
@@ -133,7 +135,7 @@ const askManagerQuestion = () => {
         });
 }
 
-const askEngineerQuestion = () => {
+const askEngineerQuestion = (employee) => {
     inquirer.prompt([
         {
             type: "input",
@@ -158,6 +160,8 @@ const askEngineerQuestion = () => {
             }
         ]).then(response=>
             {
+            let emp=new engineer(employee.id,employee.name,employee.email,response.github) 
+           teamMembers.push(emp);
                 if(response.newEmployee)
                 {
                     addTeamMember();           
@@ -169,7 +173,7 @@ const askEngineerQuestion = () => {
             });
 }
 
-const askInternQuestion = () => {
+const askInternQuestion = (employee) => {
     inquirer.prompt([
         {
             type: "input",
@@ -200,6 +204,8 @@ const askInternQuestion = () => {
         }
     ]).then(response=>
         {
+           let emp=new intern(employee.id,employee.name,employee.email,response.school) 
+           teamMembers.push(emp);
             if(response.newEmployee)
             {
                 addTeamMember();           
@@ -207,6 +213,7 @@ const askInternQuestion = () => {
             else
             {
                 console.log("Team completed")
+                console.log(teamMembers);
             }
         });
        
@@ -223,16 +230,15 @@ const addTeamMember = () => {
             askEngineerQuestion();
         }
         else if (employee.role == "Intern") {
-            askInternQuestion();
+            askInternQuestion(employee);
         }
     }
     )
-    return false;
 }
 
 
 const init = () => {
-    addTeamMember(
+    addTeamMember();
 }
 
 init();
