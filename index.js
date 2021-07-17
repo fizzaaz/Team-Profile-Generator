@@ -8,6 +8,10 @@ const intern = require('./lib/Intern')
 const engineer = require('./lib/Engineer');
 const { type } = require("os");
 
+//import to render html
+const render=require('./dist/renderHTML')
+
+
 //All team members data storage
 const teamMembers = [];
 
@@ -317,8 +321,16 @@ const addnewEmp = () => {
             }
         })
 }
+
+
 const init = () => {
     askManager();
+    fs.writeFile("./dist/team.html", createHtml(), function (err) {
+        if (err) {
+            console.log(err);
+        };
+    });
+    console.log("end");
 }
 
 init();
