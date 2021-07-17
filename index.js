@@ -5,7 +5,8 @@ const inquirer = require("inquirer");
 //importing classes
 const manager = require('./lib/Manager')
 const intern = require('./lib/Intern')
-const engineer = require('./lib/Engineer')
+const engineer = require('./lib/Engineer');
+const { type } = require("os");
 
 //All team members data storage
 const teamMembers = [];
@@ -133,6 +134,7 @@ const askEngineerQuestion=()=>
                 {
                     return true;
                 }
+
                 else
                 {
                     console.log("Github username is Required!")
@@ -172,19 +174,45 @@ const askInternQuestion=()=>
         }
     ]);
 }
-const init = () => {
+
+const addTeamMember=()=>
+{
     inquirer.prompt(questions).then(employee=>{
-    if(employee.role=="Manager")
-    {
-        askManagerQuestion();
+        if(employee.role=="Manager")
+        {
+            askManagerQuestion();
+        }
+        else if(employee.role=="Engineer"){
+    askEngineerQuestion();
+        }  
+        else if(employee.role=="Intern"){
+            askInternQuestion();
+                }    
+    },);
+}
+
+
+const init = () => {
+    addTeamMember();
+    inquirer.prompt(  {
+        type:"confirm",
+        name:"AddEmployee",
+        message:"Would you like to add more employees? (*)",
     }
-    else if(employee.role=="Engineer"){
-askEngineerQuestion();
-    }  
-    else if(employee.role=="Intern"){
-        askInternQuestion();
-            }    
-});
+    )
+    .then(function(response)
+        {
+        if(response.AddEmployee===true)
+        {
+        addTeamMember();
+        }
+        else
+        {
+console.log("write html")
+        }
+    }
+    );
+
 }
 
 init();
