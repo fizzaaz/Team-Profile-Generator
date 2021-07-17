@@ -6,15 +6,13 @@ const inquirer = require("inquirer");
 const manager = require('./lib/Manager')
 const intern = require('./lib/Intern')
 const engineer = require('./lib/Engineer');
-const { type } = require("os");
 
 //import to render html
-const render=require('./dist/renderHTML')
-
+const render=require('./dist/renderHTML.js')
 
 //All team members data storage
 const teamMembers = [];
-
+ 
 //questions for manager
 const mgrQuestions = [
     {
@@ -207,6 +205,7 @@ const askEngineer = (employee) => {
         else {
             console.log("Team completed")
             console.log(teamMembers);
+          
         }
     });
 
@@ -304,19 +303,7 @@ const addnewEmp = () => {
                         askIntern(emp);
                     }
                 });
-                /*   .then(employee=>
-                       {
-                       let emp=new engineer(employee.id,employee.name,employee.email,employee.github) 
-                      teamMembers.push(emp);
-                           if(employee.newEmployee)
-                           {
-                               addnewEmp();           
-                            }
-                           else
-                           {
-                               console.log("Team completed generate html")
-                           }
-                       });*/
+              
 
             }
         })
@@ -324,8 +311,9 @@ const addnewEmp = () => {
 
 
 const init = () => {
-    askManager();
-    fs.writeFile("./dist/team.html", createHtml(), function (err) {
+    askManager()
+    console.log("jdksdjk")
+    fs.writeFile("./dist/team.html", createHtml(), err=> {
         if (err) {
             console.log(err);
         };
