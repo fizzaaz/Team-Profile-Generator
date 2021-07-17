@@ -26,7 +26,7 @@ const questions = [
                 else {
                     console.log("Must be 0-9 digits only");
                     return false;
-        
+
                 }
             }
             else {
@@ -89,73 +89,94 @@ const questions = [
         choices: ['Engineer', 'Manager', 'Intern']
     }
 ]
-const askManagerQuestion=()=>
-{
+const askManagerQuestion = () => {
     inquirer.prompt([
         {
-type:"input",
-name:"officeNumber",
-message:"Enter manager's office number ",
-validate:validOffNumber=>
-{
-    if(validOffNumber)
-    {
-        let num = parseInt(validOffNumber);
-        if (Number.isInteger(num)) {
-            return true;
-        }
-        else {
-            console.log("Must be 0-9 digits only");
-            return false;
+            type: "input",
+            name: "officeNumber",
+            message: "Enter manager's office number ",
+            validate: validOffNumber => {
+                if (validOffNumber) {
+                    let num = parseInt(validOffNumber);
+                    if (Number.isInteger(num)) {
+                        return true;
+                    }
+                    else {
+                        console.log("Must be 0-9 digits only");
+                        return false;
 
-        }
-    }
-    else
-    {
-        console.log("Office Number is required!");
-        return false;
-    }
-}
+                    }
+                }
+                else {
+                    console.log("Office Number is required!");
+                    return false;
+                }
+            }
 
-}
-    ]);
-        }
- 
-const askEngineerQuestion=()=>
-{
-    inquirer.prompt([
+        },
         {
-            type:"input",
-            name:"github",
-            message:"Enter Engineer's Github User name",
-            validate: validGithub=>
+            type:'confirm',
+            name:'newEmployee',
+            message: "What you like to add more employee?",
+            default: false            
+        }
+    ]).then(response=>
+        {
+            if(response.newEmployee)
             {
-                if(validGithub)
-                {
+                addTeamMember();           
+             }
+            else
+            {
+                console.log("Team completed")
+            }
+        });
+}
+
+const askEngineerQuestion = () => {
+    inquirer.prompt([
+        {
+            type: "input",
+            name: "github",
+            message: "Enter Engineer's Github User name",
+            validate: validGithub => {
+                if (validGithub) {
                     return true;
                 }
 
-                else
-                {
+                else {
                     console.log("Github username is Required!")
                     return false;
                 }
             }
-        }
-    ]);
-}        
+        },
+            {
+                type:'confirm',
+                name:'newEmployee',
+                message: "What you like to add more employee?",
+                default: false            
+            }
+        ]).then(response=>
+            {
+                if(response.newEmployee)
+                {
+                    addTeamMember();           
+                 }
+                else
+                {
+                    console.log("Team completed")
+                }
+            });
+}
 
-const askInternQuestion=()=>
-{
+const askInternQuestion = () => {
     inquirer.prompt([
         {
-            type:"input",
-            name:"school",
-            message:"Enter Intern's School name",
-            validate: validIntern=>
-            {
-                if(validIntern)
-                {
+            type: "input",
+            name: "school",
+            message: "Enter Intern's School name",
+            validate: validIntern => {
+                if (validIntern) {
                     let letters = /^[A-Za-z]+$/;
                     if (validIntern.match(letters)) {
                         return true;
@@ -165,54 +186,53 @@ const askInternQuestion=()=>
                         return false;
                     }
                 }
-                else
-                {
+                else {
                     console.log("Intern's School name is Required!")
                     return false;
                 }
             }
+        },
+        {
+            type:'confirm',
+            name:'newEmployee',
+            message: "What you like to add more employee?",
+            default: false            
         }
-    ]);
+    ]).then(response=>
+        {
+            if(response.newEmployee)
+            {
+                addTeamMember();           
+             }
+            else
+            {
+                console.log("Team completed")
+            }
+        });
+       
 }
 
-const addTeamMember=()=>
-{
-    inquirer.prompt(questions).then(employee=>{
-        if(employee.role=="Manager")
-        {
+
+
+const addTeamMember = () => {
+    inquirer.prompt(questions).then(employee => {
+        if (employee.role == "Manager") {
             askManagerQuestion();
         }
-        else if(employee.role=="Engineer"){
-    askEngineerQuestion();
-        }  
-        else if(employee.role=="Intern"){
+        else if (employee.role == "Engineer") {
+            askEngineerQuestion();
+        }
+        else if (employee.role == "Intern") {
             askInternQuestion();
-                }    
-    },);
+        }
+    }
+    )
+    return false;
 }
 
 
 const init = () => {
-    addTeamMember();
-    inquirer.prompt(  {
-        type:"confirm",
-        name:"AddEmployee",
-        message:"Would you like to add more employees? (*)",
-    }
-    )
-    .then(function(response)
-        {
-        if(response.AddEmployee===true)
-        {
-        addTeamMember();
-        }
-        else
-        {
-console.log("write html")
-        }
-    }
-    );
-
+    addTeamMember(
 }
 
 init();
