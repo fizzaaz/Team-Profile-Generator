@@ -10,6 +10,7 @@ const engineer = require('./lib/Engineer')
 //All team members data storage
 const teamMembers = [];
 
+
 const questions = [
     {
         type: "input",
@@ -22,9 +23,9 @@ const questions = [
                     return true;
                 }
                 else {
-                    console.log("ID must be 0-9 digits only");
+                    console.log("Must be 0-9 digits only");
                     return false;
-
+        
                 }
             }
             else {
@@ -60,25 +61,22 @@ const questions = [
         type: "input",
         name: "email",
         message: "Enter Employee's email address: (*)",
-        validate: validEmail=>
-        {
-            if(validEmail)
-            {
-                let email=/\S+@\S+\.\S+/;
-                if(validEmail.match(email))
-                {
+        validate: validEmail => {
+            if (validEmail) {
+                //string@anystring.any stringS 
+                let email = /\S+@\S+\.\S+/;
+                if (validEmail.match(email)) {
                     return true;
                 }
-                else{
+                else {
                     console.log("Invalid Emaill Address");
 
                 }
 
             }
-            else
-            {
-console.log("Email is required!");
-return false;
+            else {
+                console.log("Email is required!");
+                return false;
             }
 
         }
@@ -90,9 +88,103 @@ return false;
         choices: ['Engineer', 'Manager', 'Intern']
     }
 ]
+const askManagerQuestion=()=>
+{
+    inquirer.prompt([
+        {
+type:"input",
+name:"officeNumber",
+message:"Enter manager's office number ",
+validate:validOffNumber=>
+{
+    if(validOffNumber)
+    {
+        let num = parseInt(validOffNumber);
+        if (Number.isInteger(num)) {
+            return true;
+        }
+        else {
+            console.log("Must be 0-9 digits only");
+            return false;
 
+        }
+    }
+    else
+    {
+        console.log("Office Number is required!");
+        return false;
+    }
+}
+
+}
+    ]);
+        }
+ 
+const askEngineerQuestion=()=>
+{
+    inquirer.prompt([
+        {
+            type:"input",
+            name:"github",
+            message:"Enter Engineer's Github User name",
+            validate: validGithub=>
+            {
+                if(validGithub)
+                {
+                    return true;
+                }
+                else
+                {
+                    console.log("Github username is Required!")
+                    return false;
+                }
+            }
+        }
+    ]);
+}        
+
+const askInternQuestion=()=>
+{
+    inquirer.prompt([
+        {
+            type:"input",
+            name:"school",
+            message:"Enter Intern's School name",
+            validate: validIntern=>
+            {
+                if(validIntern)
+                {
+                    let letters = /^[A-Za-z]+$/;
+                    if (validIntern.match(letters)) {
+                        return true;
+                    }
+                    else {
+                        console.log("School Name should have alphabets only")
+                        return false;
+                    }
+                }
+                else
+                {
+                    console.log("Intern's School name is Required!")
+                    return false;
+                }
+            }
+        }
+    ]);
+}
 const init = () => {
-    inquirer.prompt(questions);
+    inquirer.prompt(questions).then(employee=>{
+    if(employee.role=="Manager")
+    {
+        askManagerQuestion();
+    }
+    else if(employee.role=="Engineer"){
+askEngineerQuestion();
+    }  
+    else if(employee.role=="Intern"){
+        askInternQuestion();
+            }    
+});
 }
 
 init();
