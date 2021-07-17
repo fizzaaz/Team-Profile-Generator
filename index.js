@@ -11,12 +11,12 @@ const { type } = require("os");
 //All team members data storage
 const teamMembers = [];
 
-
-const questions = [
+//questions for manager
+const mgrQuestions = [
     {
         type: "input",
         name: "id",
-        message: "Enter Employee's ID: (*)",
+        message: "Enter Manager's ID: (*)",
         validate: validID => {
             if (validID) {
                 let id = parseInt(validID);
@@ -38,7 +38,7 @@ const questions = [
     {
         type: "input",
         name: "name",
-        message: "Enter Employee's name: (*)",
+        message: "Enter Manager's name: (*)",
         validate: validName => {
             if (validName) {
                 let letters = /^[A-Za-z]+$/;
@@ -61,7 +61,7 @@ const questions = [
     {
         type: "input",
         name: "email",
-        message: "Enter Employee's email address: (*)",
+        message: "Enter Manager's email address: (*)",
         validate: validEmail => {
             if (validEmail) {
                 //string@anystring.any stringS 
@@ -83,95 +83,35 @@ const questions = [
         }
     },
     {
-        type: "checkbox",
-        name: "role",
-        message: "Select the Employee's role: (*)",
-        choices: ['Engineer', 'Manager', 'Intern']
-    }
-]
-const askManagerQuestion = (employee) => {
-    inquirer.prompt([
-        {
-            type: "input",
-            name: "officeNumber",
-            message: "Enter manager's office number ",
-            validate: validOffNumber => {
-                if (validOffNumber) {
-                    let num = parseInt(validOffNumber);
-                    if (Number.isInteger(num)) {
-                        return true;
-                    }
-                    else {
-                        console.log("Must be 0-9 digits only");
-                        return false;
-
-                    }
-                }
-                else {
-                    console.log("Office Number is required!");
-                    return false;
-                }
-            }
-
-        },
-        {
-            type:'confirm',
-            name:'newEmployee',
-            message: "What you like to add more employee?",
-            default: false            
-        }
-    ]).then(response=>
-        {
-            let emp=new manager(employee.id,employee.name,employee.email,response.officeNumber) 
-           teamMembers.push(emp);
-            if(response.newEmployee)
-            {
-                addTeamMember();           
-             }
-            else
-            {
-                console.log("Team completed")
-            }
-        });
-}
-
-const askEngineerQuestion = (employee) => {
-    inquirer.prompt([
-        {
-            type: "input",
-            name: "github",
-            message: "Enter Engineer's Github User name",
-            validate: validGithub => {
-                if (validGithub) {
+        type: "input",
+        name: "officeNumber",
+        message: "Enter manager's office number ",
+        validate: validOffNumber => {
+            if (validOffNumber) {
+                let num = parseInt(validOffNumber);
+                if (Number.isInteger(num)) {
                     return true;
                 }
-
                 else {
-                    console.log("Github username is Required!")
+                    console.log("Must be 0-9 digits only");
                     return false;
+
                 }
             }
-        },
-            {
-                type:'confirm',
-                name:'newEmployee',
-                message: "What you like to add more employee?",
-                default: false            
+            else {
+                console.log("Office Number is required!");
+                return false;
             }
-        ]).then(response=>
-            {
-            let emp=new engineer(employee.id,employee.name,employee.email,response.github) 
-           teamMembers.push(emp);
-                if(response.newEmployee)
-                {
-                    addTeamMember();           
-                 }
-                else
-                {
-                    console.log("Team completed")
-                }
-            });
-}
+        }
+    },
+    {
+        type: 'confirm',
+        name: 'newEmployee',
+        message: "What you like to add another team member?",
+        default: false
+    }
+
+]
 
 const askInternQuestion = (employee) => {
     inquirer.prompt([
@@ -197,48 +137,173 @@ const askInternQuestion = (employee) => {
             }
         },
         {
-            type:'confirm',
-            name:'newEmployee',
+            type: 'confirm',
+            name: 'newEmployee',
             message: "What you like to add more employee?",
-            default: false            
+            default: false
         }
-    ]).then(response=>
-        {
-           let emp=new intern(employee.id,employee.name,employee.email,response.school) 
-           teamMembers.push(emp);
-            if(response.newEmployee)
-            {
-                addTeamMember();           
-             }
-            else
-            {
-                console.log("Team completed")
-                console.log(teamMembers);
-            }
-        });
-       
+    ]).then(response => {
+        let emp = new intern(employee.id, employee.name, employee.email, response.school)
+        teamMembers.push(emp);
+        if (response.newEmployee) {
+            addTeamMember();
+        }
+        else {
+            console.log("Team completed")
+            console.log(teamMembers);
+        }
+    });
+
 }
 
 
 
-const addTeamMember = () => {
-    inquirer.prompt(questions).then(employee => {
-        if (employee.role == "Manager") {
-            askManagerQuestion();
+const addManager = () => {
+    inquirer.prompt(mgrQuestions).then(employee => {
+
+        if (employee.newEmployee) {
+            addnewEmp();
         }
-        else if (employee.role == "Engineer") {
-            askEngineerQuestion();
-        }
-        else if (employee.role == "Intern") {
-            askInternQuestion(employee);
+        else {
+            console.log("generate html")
         }
     }
     )
 }
 
+const askEngineer=()=>
+{
+    inquirer.prompt({
+        type: "input",
+        name: "github",
+        message: "Enter Employee's Github User name",
+        validate: validGithub => {
+            if (validGithub) {
+                return true;
+            }
 
+            else {
+                console.log("Github username is Required!")
+                return false;
+            }
+        }
+    },
+
+    )
+}
+const addnewEmp = () => {
+    inquirer.prompt(
+        {
+            type: "list",
+            name: "role",
+            message: "Select the Employee's role: (*)",
+            choices: ['Engineer', 'Intern', 'none']
+        }).then(employee => {
+            if (employee.role == "none") {
+                console.log("generate html2")
+            }
+            else {
+                inquirer.prompt([
+                    {
+                        type: "input",
+                        name: "id",
+                        message: "Enter Employee's ID: (*)",
+                        validate: validID => {
+                            if (validID) {
+                                let id = parseInt(validID);
+                                if (Number.isInteger(id)) {
+                                    return true;
+                                }
+                                else {
+                                    console.log("Must be 0-9 digits only");
+                                    return false;
+
+                                }
+                            }
+                            else {
+                                console.log("ID is required");
+                                return false;
+                            }
+                        }
+                    },
+                    {
+                        type: "input",
+                        name: "name",
+                        message: "Enter Employee's name: (*)",
+                        validate: validName => {
+                            if (validName) {
+                                let letters = /^[A-Za-z]+$/;
+                                if (validName.match(letters)) {
+                                    return true;
+                                }
+                                else {
+                                    console.log("Name should have alphabets only")
+                                    return false;
+                                }
+
+                            }
+                            else {
+                                console.log("Employee's name is required");
+
+                                return false;
+                            }
+                        }
+                    },
+                    {
+                        type: "input",
+                        name: "email",
+                        message: "Enter Employee's email address: (*)",
+                        validate: validEmail => {
+                            if (validEmail) {
+                                //string@anystring.any stringS 
+                                let email = /\S+@\S+\.\S+/;
+                                if (validEmail.match(email)) {
+                                    return true;
+                                }
+                                else {
+                                    console.log("Invalid Emaill Address");
+
+                                }
+
+                            }
+                            else {
+                                console.log("Email is required!");
+                                return false;
+                            }
+
+                        }
+                    },
+
+                ]).then(function()
+                {
+                if (employee.role === "Engineer")
+                {
+                    askEngineer();
+                }
+                else if (employee.role === "Intern") 
+                {
+                    console.log("djfjhdf")
+                }
+            });
+                /*   .then(employee=>
+                       {
+                       let emp=new engineer(employee.id,employee.name,employee.email,employee.github) 
+                      teamMembers.push(emp);
+                           if(employee.newEmployee)
+                           {
+                               addnewEmp();           
+                            }
+                           else
+                           {
+                               console.log("Team completed generate html")
+                           }
+                       });*/
+
+            }
+        })
+}
 const init = () => {
-    addTeamMember();
+    addManager();
 }
 
 init();
