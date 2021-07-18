@@ -7,12 +7,10 @@ const manager = require('./lib/Manager')
 const intern = require('./lib/Intern')
 const engineer = require('./lib/Engineer');
 
-//import to render html
-const render=require('./dist/renderHTML.js')
 
 //All team members data storage
 const teamMembers = [];
- 
+const Role=[]; 
 //questions for manager
 const mgrQuestions = [
     {
@@ -147,12 +145,14 @@ const askIntern = (employee) => {
     ]).then(response => {
         let emp = new intern(employee.id, employee.name, employee.email, response.school)
         teamMembers.push(emp);
+        Role.push("Intern")
         if (response.newEmployee) {
             addnewEmp();
         }
         else {
             console.log("Team completed")
             console.log(teamMembers);
+            createHtml(teamMembers);   
         }
     });
 
@@ -164,11 +164,12 @@ const askManager = () => {
     inquirer.prompt(mgrQuestions).then(employee => {
         let emp = new manager(employee.id, employee.name, employee.email, employee.officeNumber)
         teamMembers.push(emp);
+        Role.push("Manager")
         if (employee.newEmployee) {
             addnewEmp();
         }
         else {
-            console.log("generate html")
+            createHtml(teamMembers);   
         }
     }
     )
@@ -199,12 +200,15 @@ const askEngineer = (employee) => {
     ]).then(response => {
         let emp = new engineer(employee.id, employee.name, employee.email, response.github)
         teamMembers.push(emp);
+        Role.push("Engineer")
+
         if (response.newEmployee) {
             addnewEmp();
         }
         else {
             console.log("Team completed")
             console.log(teamMembers);
+            createHtml(teamMembers);   
           
         }
     });
@@ -220,7 +224,7 @@ const addnewEmp = () => {
             choices: ['Engineer', 'Intern', 'none']
         }).then(employee => {
             if (employee.role == "none") {
-                console.log("generate html2")
+                createHtml(teamMembers);
             }
             else {
                 inquirer.prompt([
@@ -309,16 +313,115 @@ const addnewEmp = () => {
         })
 }
 
+const addManagerCard=(team,role)=>
+{
+    return addEmployeecard(team,role)+`
+   
+          Office Number: ${team.officeNumber}
+        </div>
+      </div>
+    </div>
+  </div> `
+}
+const addEngineerCard=(team,role)=>
+{
+    return addEmployeecard(team,role)+`
+                <div class="employee-entry border border-secondary bg-white">
+                  GitHub: <a href="https://github.com/${team.github}" target="_blank">${team.github}</a>
+                </div>
+              </div>
+            </div>
+          </div>`
+}
+const addEmployeecard=(team,role)=>
+{
+    return ` <div class="col-lg-4 mb-4">
+    <div class="card employee-card">
+      <div class="card-header employee-header bg-info text-white">
+        <h4>${team.name}</h4>
+        <h5><i class="fas fa-user-graduate "></i> ${role}</h5>
+      </div>
+      <div class="card-body bg-light">
+        <div class="employee-entry border border-secondary bg-white ">
+          ID: ${team.id}
+        </div>
+        <div class="employee-entry border-right border-left border-secondary bg-white">
+          Email: <a href="mailto:${team.email}">${team.email}</a>
+        </div>
+        <div class="employee-entry border border-secondary bg-white">`
+}
+const addInternCard=(team,role)=>
+{
+    return  addEmployeecard(team,role)+`   
+            School: ${team.school}
+          </div>
+        </div>
+      </div>
+  `
+}
+const renderHtml=(teamMembers)=>
+{
+    let starthtml=`<!DOCTYPE html>
+    <html lang="en">
+    
+    <head>
+      <meta charset="UTF-8" />
+      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+      <title>My Team Roster</title>
+      <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css"
+          integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous" />
+    </head>
+    
+    <body>
+      <header class="jumbotron text-center my-team-header bg-info text-white">
+        <h1>My Team Roster</h1>
+      </header>
+      <main class="container ">
+        <div class="row justify-content-center">
+         `
+    let endHtml=` </main>
+    </body>
+   </html>`
+    for(let i=0;i<teamMembers.length;i++)
+    {
+        
+     if(Role[i]==="Intern")
+        {
 
-const init = () => {
-    askManager()
-    console.log("jdksdjk")
-    fs.writeFile("./dist/team.html", createHtml(), err=> {
+            starthtml+=addInternCard(teamMembers[i]);
+        }
+        else if(Role[i]==="Engineer")
+        {        
+
+            starthtml+=addEngineerCard(teamMembers[i],engineer.getRole());
+        }
+        else 
+        {
+
+            starthtml+=addManagerCard(teamMembers[i],manager.getRole());
+        }
+    
+          
+       
+     
+
+    }
+    return  starthtml+endHtml;
+}
+const createHtml=(teamMembers)=>
+{
+    fs.writeFile("./dist/team.html", renderHtml(teamMembers), err=> {
         if (err) {
             console.log(err);
         };
     });
     console.log("end");
+}
+const init = () => {
+    askManager();
 }
 
 init();
