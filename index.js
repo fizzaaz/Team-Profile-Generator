@@ -6,6 +6,7 @@ const inquirer = require("inquirer");
 const manager = require('./lib/Manager')
 const intern = require('./lib/Intern')
 const engineer = require('./lib/Engineer');
+const Employee = require("./lib/Employee");
 
 
 //All team members data storage
@@ -313,9 +314,11 @@ const addnewEmp = () => {
         })
 }
 
-const addManagerCard=(team,role)=>
+const addManagerCard=(team)=>
 {
-    return addEmployeecard(team,role)+`
+    let e=new manager(team.id,team.name,team.email,team.officeNumber)
+
+    return addEmployeecard(e)+`
    
           Office Number: ${team.officeNumber}
         </div>
@@ -323,40 +326,45 @@ const addManagerCard=(team,role)=>
     </div>
   </div> `
 }
-const addEngineerCard=(team,role)=>
+const addEngineerCard=(team)=>
 {
-    return addEmployeecard(team,role)+`
+    let e=new engineer(team.id,team.name,team.email,team.github)
+
+    return addEmployeecard(e)+`
                 <div class="employee-entry border border-secondary bg-white">
-                  GitHub: <a href="https://github.com/${team.github}" target="_blank">${team.github}</a>
+                  GitHub: <a href="https://github.com/${e.getGithub()}" target="_blank">${e.getGithub()}</a>
                 </div>
               </div>
             </div>
           </div>`
 }
-const addEmployeecard=(team,role)=>
+const addEmployeecard=(e)=>
 {
     return ` <div class="col-lg-4 mb-4">
     <div class="card employee-card">
       <div class="card-header employee-header bg-info text-white">
-        <h4>${team.name}</h4>
-        <h5><i class="fas fa-user-graduate "></i> ${role}</h5>
+        <h4>${e.getName()}</h4>
+        <h5><i class="fas fa-user-graduate "></i> ${e.getRole()}</h5>
       </div>
       <div class="card-body bg-light">
         <div class="employee-entry border border-secondary bg-white ">
-          ID: ${team.id}
+          ID: ${e.getId()}
         </div>
         <div class="employee-entry border-right border-left border-secondary bg-white">
-          Email: <a href="mailto:${team.email}">${team.email}</a>
+          Email: <a href="mailto:${e.getEmail()}">${e.getEmail()}</a>
         </div>
         <div class="employee-entry border border-secondary bg-white">`
 }
-const addInternCard=(team,role)=>
+const addInternCard=(team)=>
 {
-    return  addEmployeecard(team,role)+`   
-            School: ${team.school}
+    let e=new intern(team.id,team.name,team.email,team.school)
+
+    return  addEmployeecard(e)+`   
+            School: ${e.getSchool()}
+            </div>
+            </div>
           </div>
         </div>
-      </div>
   `
 }
 const renderHtml=(teamMembers)=>
@@ -395,13 +403,14 @@ const renderHtml=(teamMembers)=>
         }
         else if(Role[i]==="Engineer")
         {        
-
-            starthtml+=addEngineerCard(teamMembers[i],engineer.getRole());
+            let e=new engineer("a","b","c","d")
+            starthtml+=addEngineerCard(teamMembers[i],e.getRole());
         }
         else 
         {
+            let e=new manager("a","b","c","d")
 
-            starthtml+=addManagerCard(teamMembers[i],manager.getRole());
+            starthtml+=addManagerCard(teamMembers[i],e.getRole());
         }
     
           
