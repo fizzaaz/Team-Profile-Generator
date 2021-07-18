@@ -42,5 +42,32 @@ const Employee = require("../lib/Employee");
         expect(emp.email).toEqual(expect.any(String));
     });
 
-    
+    test("Can get ID via getId()", () => {
+        const testValue = 5;
+        const e = new Employee(testValue);
+        expect(e.getId()).toBe(testValue);
+    });
 
+     //check if the number is numbers only  //passed
+     test("Id must be numbers only", () => {
+        const emp = new Employee(5);
+        expect(emp.getId()).toEqual(expect.any(Number));
+        });
+
+    test("Can get name via getName()", () => {
+        const testValue = "Fizza";
+        const e = new Employee(5,testValue);
+        expect(e.getName()).toBe(testValue);
+    });
+
+    test("Can get EMAIL via geteEmail()", () => {
+        const testValue = "Fizza.zhera@gmail.com";
+        const e = new Employee(5,"Fizza",testValue);
+        expect(e.getEmail()).toBe(testValue);
+    });
+ //email must be strng only
+ test("check if email is a string", () => {
+    const testValue = "fizz.zehra14@gmail.com";
+    const emp = new Employee(5, "Fizza", testValue);
+    expect(emp.getEmail()).toEqual(expect.any(String));
+});
