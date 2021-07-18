@@ -20,10 +20,27 @@ const Employee = require("../lib/Employee");
     expect(emp.id).toEqual(expect.any(Number));
     });
 
+
+//set name wiith constrctor args
     test("Can set name via constructor arguments",()=>
     {
-testName="Fizza";
-const emp=new Employee(5,testName);
-expect(emp.name).toEqual(testName)
+        testName="Fizza";
+        const emp=new Employee(5,testName);
+        expect(emp.name).toEqual(testName)
     });
+    //set email via cons args
+    test("Can set email via constructor argument", () => {
+        const testValue = "fizz.zehra14@gmail.com";
+        const emp = new Employee(5, "Fizza", testValue);
+        expect(emp.email).toBe(testValue);
+    });
+
+    //email must be strng only
+    test("check if email is a string", () => {
+        const testValue = "fizz.zehra14@gmail.com";
+        const emp = new Employee(5, "Fizza", testValue);
+        expect(emp.email).toEqual(expect.any(String));
+    });
+
+    
 
