@@ -320,7 +320,7 @@ const addManagerCard=(team)=>
 
     return addEmployeecard(e)+`
    
-          Office Number: ${team.officeNumber}
+          Office Number: ${e.getOfficeNumber()}
         </div>
       </div>
     </div>
