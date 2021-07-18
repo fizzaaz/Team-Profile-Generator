@@ -26,11 +26,12 @@ To install this application, you will need a text editor. I would recommend Visu
 ### Summary
 
 This application was created to generate a team profile based on user input using the Inquirer module from Node.js and displaying the information on a newly created html page with a style sheet. This project demonstrates use of OOP and TDD using Jest.
+
 ![](src/demo.gif)
 
 ### Goal
 
-
+Your application should use Jest (Links to an external site.) for running the unit tests and Inquirer (Links to an external site.) for collecting input from the user. The application will be invoked by using the command node index.js.
 
 ### Features: 
 * Search Section
