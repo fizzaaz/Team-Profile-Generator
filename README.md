@@ -34,38 +34,21 @@ This application was created to generate a team profile based on user input usin
 Your application should use Jest (Links to an external site.) for running the unit tests and Inquirer (Links to an external site.) for collecting input from the user. The application will be invoked by using the command node index.js.
 
 ### Features: 
-* Search Section
-    * This allows the user to enter the city to see the weather condition of that city. Also, buttons are created dynamically of previously searched cities.
-
-![](assets/images/search.JPG)
-
-* Current weather forecast
-    * This displays the current weather forecast of the entered city. This block displays the uv index, temperature , wind speed , humidity , icon and current date.
+* Classes
+  Contains getter and constructor functions. Contains the concept of inheritance.
+   
+* Jest
+  Used to test our code.
     
-![](assets/images/current.JPG)
-
-* 5 day forecast
-    * Displays the 5 day forecast of searched city in the flexboxes. 
-
-![](assets/images/5day.JPG)
-
-* Icon
-    * Displays the weather situation using pictorial representation. 
-
-![](assets/images/icon.JPG)
-
-
-* UV index
-    * Displays the current weather situation by changing the color from green, yellow and red according to the severity of the UV index. 
- 
-![](assets/images/uv.JPG)
+* Inquirer
+   Used to prompt user.
 
 ### Project Requirements
 * WHEN the user am prompted for my team members and their information THEN an HTML file is generated that displays a nicely formatted team roster based on user input.
 * WHEN the user click on an email address in the HTML THEN my default email program opens and populates the TO field of the email with the address
 * WHEN the user click on the GitHub username THEN that GitHub profile opens in a new tab
 * WHEN the user start the application THEN I am prompted to enter the team manager’s name, employee ID, email address, and office number
-* WHEN the user enter the team manager’s name, employee ID, email address, and office number THEN the user am presented with a menu with the option to add an engineer or an intern or to finish building my team
+* WHEN the user enter the team manager’s name, employee ID, email address, and office number THEN the user am presented with a menu with the option to add an engineer or an     intern or to finish building my team
 * WHEN the user select the engineer option THEN the user am prompted to enter the engineer’s name, ID, email, and GitHub username, and I am taken back to the menu.
 * WHEN the user select the intern option THEN the user am prompted to enter the intern’s name, ID, email, and school, and the user am taken back to the menu.
 * WHEN the user decide to finish building my team THEN the user exit the application, and the HTML is generated
